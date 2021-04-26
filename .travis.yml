@@ -11,9 +11,17 @@ script:
 
 after_success:
   - docker build -t oleg/multi-client ./client
-  - docker build -t oleg/multi-client ./nginx
-  - docker build -t oleg/multi-client ./server
-  - docker build -t oleg/multi-client ./worker
+  - docker build -t oleg/multi-nginx ./nginx
+  - docker build -t oleg/multi-server ./server
+  - docker build -t oleg/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push to dockerhub
+  - docker push oleg/multi-client
+  - docker push oleg/multi-nginx
+  - docker push oleg/multi-server
+  - docker push oleg/multi-worker
 
 
 
